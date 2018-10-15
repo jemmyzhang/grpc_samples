@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/grpc_samples.iml" filepath="$PROJECT_DIR$/.idea/modules/grpc_samples.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/grpc_samples_main.iml" filepath="$PROJECT_DIR$/.idea/modules/grpc_samples_main.iml" group="grpc_samples" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/grpc_samples_test.iml" filepath="$PROJECT_DIR$/.idea/modules/grpc_samples_test.iml" group="grpc_samples" />
+    </modules>
+  </component>
+</project>
