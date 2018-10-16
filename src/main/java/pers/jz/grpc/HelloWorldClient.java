@@ -20,12 +20,10 @@ public class HelloWorldClient {
     //初始化信道和存根
     public HelloWorldClient(String host,int port){
         this(ManagedChannelBuilder.forAddress(host, port)
-                // Channels are secure by default (via SSL/TLS). For the example we disable TLS to avoid
-                // needing certificates.
+                //信道默认是基于TLS或者SSL加密的，这里我们禁用了TLS以避免通信需要认真
                 .usePlaintext(true));
     }
 
-    /** Construct client for accessing RouteGuide server using the existing channel. */
     private HelloWorldClient(ManagedChannelBuilder<?> channelBuilder) {
         channel = channelBuilder.build();
         blockingStub = GreeterGrpc.newBlockingStub(channel);
