@@ -1,4 +1,4 @@
-package pers.jz.grpc;
+package pers.jz.grpc.basic;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;

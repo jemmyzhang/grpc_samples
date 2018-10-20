@@ -104,7 +104,6 @@ public class RouteGuideClient {
             requestObserver.onError(e);
             throw e;
         }
-
     }
 
     public void dualStreamSend() throws Exception {
