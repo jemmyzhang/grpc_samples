@@ -1,23 +1,16 @@
-package pers.jz.grpc.advanced;
+package pers.jz.grpc.tls;
 
 import com.google.protobuf.ByteString;
 import io.grpc.Server;
-import io.grpc.ServerBuilder;
 import io.grpc.netty.NettyServerBuilder;
 import io.grpc.stub.StreamObserver;
+import io.netty.handler.ssl.ClientAuth;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import pers.jz.grpc.cacheService.*;
 
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 /**
@@ -26,16 +19,17 @@ import java.util.Objects;
 public class CacheServer {
     Server server;
 
-    final String SERVER_KEY_PATH = getClass().getClassLoader().getResource("ssl/kserver.keystore").getPath();
-    final String SERVER_PASSWORD = "123456";
+    final String PRIVATE_KEY_FILE_PATH = getClass().getClassLoader().getResource("ssl/oepnserver_key_pkcs8.pem").getPath();
+    final String CERT_CHAIN__FILE_PATH = getClass().getClassLoader().getResource("ssl/openserver.pem").getPath();
+    final String TRUST_CERT_COLLECTION_FILE_PATH = getClass().getClassLoader().getResource("ssl/trustCertCollectionFilePath.pem").getPath();
 
     {
-        System.setProperty("javax.net.ssl.trustStore", SERVER_KEY_PATH);
+        System.setProperty("javax.net.ssl.trustStore", PRIVATE_KEY_FILE_PATH);
     }
 
-    public CacheServer(int port) throws Exception{
+    public CacheServer(int port) throws Exception {
         sslContext();
-        server = NettyServerBuilder.forPort(port).addService(new CacheServiceImpl()).build().start();
+        server = NettyServerBuilder.forPort(port).sslContext(sslContext()).addService(new CacheServiceImpl()).build().start();
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
@@ -47,13 +41,14 @@ public class CacheServer {
     }
 
     private SslContext sslContext() throws Exception {
-        KeyStore keyStore = KeyStore.getInstance("JKS");
-        keyStore.load(new FileInputStream(SERVER_KEY_PATH), "111111".toCharArray());
-        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
-        keyManagerFactory.init(keyStore,"111111".toCharArray());
-        SslContext sslContext = SslContextBuilder.forServer(keyManagerFactory).build();
-        System.out.println(sslContext.isServer());
-        return null;
+        SslContextBuilder sslContextBuilder = SslContextBuilder
+                .forServer(new FileInputStream(CERT_CHAIN__FILE_PATH), new FileInputStream(PRIVATE_KEY_FILE_PATH));
+        File file = new File(TRUST_CERT_COLLECTION_FILE_PATH);
+        if (file.exists()) {
+            sslContextBuilder.trustManager(file);
+            sslContextBuilder.clientAuth(ClientAuth.NONE);
+        }
+        return sslContextBuilder.build();
     }
 
 
