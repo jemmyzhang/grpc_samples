@@ -1,6 +1,7 @@
 package pers.jz.grpc.errorhandling;
 
 /**
+ * 自定义错误类型
  * @author Jemmy Zhang on 2018/10/21.
  */
 public class CustomException extends Exception {

@@ -1,4 +1,4 @@
-package pers.jz.grpc.basic;
+package pers.jz.grpc.jwt.demo1;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -6,25 +6,35 @@ import io.grpc.StatusRuntimeException;
 import pers.jz.grpc.helloworld.GreeterGrpc;
 import pers.jz.grpc.helloworld.HelloReply;
 import pers.jz.grpc.helloworld.HelloRequest;
+import pers.jz.grpc.jwt.JwtTools;
 
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author Jemmy Zhang on 2018/10/16.
  */
-public class HelloWorldClient {
+public class JwtRpcClient {
 
     private final ManagedChannel channel; //一个gRPC信道
     private final GreeterGrpc.GreeterBlockingStub blockingStub;//阻塞/同步 存根
 
-    //初始化信道和存根
-    public HelloWorldClient(String host, int port) {
+    public JwtRpcClient(String host, int port) {
         this(ManagedChannelBuilder.forAddress(host, port).usePlaintext(true));
     }
 
-    private HelloWorldClient(ManagedChannelBuilder<?> channelBuilder) {
+    private JwtRpcClient(ManagedChannelBuilder<?> channelBuilder) {
+        JwtCallCredential jwtCallCredential = buildJwtCallCredential();
         channel = channelBuilder.build();
-        blockingStub = GreeterGrpc.newBlockingStub(channel);
+        blockingStub = GreeterGrpc.newBlockingStub(channel).withCallCredentials(jwtCallCredential);
+    }
+
+    /**
+     * 建立一个
+     * @return
+     */
+    private JwtCallCredential buildJwtCallCredential() {
+        String jwt = JwtTools.createJwt(JwtTools.JWT_SECRET, "admin", "password");
+        return new JwtCallCredential(jwt);
     }
 
     public void shutdown() throws InterruptedException {
@@ -45,7 +55,7 @@ public class HelloWorldClient {
     }
 
     public static void main(String[] args) throws Exception {
-        HelloWorldClient client = new HelloWorldClient("127.0.0.1", 50051);
+        JwtRpcClient client = new JwtRpcClient("127.0.0.1", 50051);
         client.greet("HelloWorld");
         client.shutdown();
     }
