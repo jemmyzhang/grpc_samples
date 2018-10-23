@@ -1,6 +1,9 @@
 package pers.jz.grpc.jwt.demo1;
 
-import io.grpc.*;
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
+import io.grpc.ServerInterceptors;
+import io.grpc.ServerServiceDefinition;
 import io.grpc.stub.StreamObserver;
 import pers.jz.grpc.helloworld.GreeterGrpc;
 import pers.jz.grpc.helloworld.HelloReply;

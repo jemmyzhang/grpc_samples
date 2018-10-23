@@ -4,14 +4,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
-import pers.jz.grpc.helloworld.GreeterGrpc;
-import pers.jz.grpc.helloworld.HelloReply;
-import pers.jz.grpc.helloworld.HelloRequest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
