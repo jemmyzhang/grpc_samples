@@ -34,4 +34,9 @@ public class JwtCallCredential implements CallCredentials {
 
     }
 
+    @Override
+    public void thisUsesUnstableApi() {
+
+    }
+
 }

@@ -10,7 +10,7 @@
 
 
     <properties>
-        <grpc.version>1.0.3</grpc.version>
+        <grpc.version>1.12.1</grpc.version>
     </properties>
 
     <dependencies>
