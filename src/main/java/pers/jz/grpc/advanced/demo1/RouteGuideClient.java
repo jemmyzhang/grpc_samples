@@ -1,4 +1,4 @@
-package pers.jz.grpc.advanced;
+package pers.jz.grpc.advanced.demo1;
 
 import com.google.common.util.concurrent.SettableFuture;
 import io.grpc.ManagedChannel;
